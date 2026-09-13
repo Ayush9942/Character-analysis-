@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Character Match AI 🎭 | Neural Facial Identifier</title>
+  <!-- Google Fonts for futuristic look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient glowing background lights -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <main class="app-container">
+
+    <!-- 1. HOME SCREEN -->
+    <section id="screen-home" class="screen active">
+      
+      <h1 class="glitch-title">CHARACTER<br><span class="gradient-text">MATCH AI</span></h1>
+      <p class="subtitle">"Which character are you?"</p>
+      <p class="genres">Anime • Movies • TV • Games</p>
+
+      <div class="tech-card">
+        <div class="tech-item"><span>⚡ Biometric Mapping</span></div>
+        <div class="tech-item"><span>🎯 10,000+ Profiles</span></div>
+      </div>
+
+      <button id="btn-start" class="primary-btn">
+        <span>START MATCHING</span>
+        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <p class="privacy-note">🔒 Camera feed processed on-device. Zero cloud uploads.</p>
+    </section>
+
+    <!-- 2. CATEGORY SELECTION SCREEN -->
+    <section id="screen-category" class="screen">
+      <h2 class="section-title">Select Database</h2>
+      <p class="section-sub">Choose your target universe for facial matching</p>
+
+      <div class="category-grid">
+        <button class="cat-card active" data-category="Anime">
+          <span class="cat-icon">🍥</span>
+          <span class="cat-title">Anime</span>
+          <span class="cat-meta">Shonen, Seinen & more</span>
+        </button>
+
+        <button class="cat-card" data-category="Movies">
+          <span class="cat-icon">🎬</span>
+          <span class="cat-title">Movies</span>
+          <span class="cat-meta">Hollywood & Blockbusters</span>
+        </button>
+
+        <button class="cat-card" data-category="TV Shows">
+          <span class="cat-icon">📺</span>
+          <span class="cat-title">TV Shows</span>
+          <span class="cat-meta">Series & Sitcoms</span>
+        </button>
+
+        <button class="cat-card" data-category="Games">
+          <span class="cat-icon">🎮</span>
+          <span class="cat-title">Games</span>
+          <span class="cat-meta">RPG, Action & Lore</span>
+        </button>
+
+        <button class="cat-card full-width" data-category="Surprise Me">
+          <span class="cat-icon">✨</span>
+          <span class="cat-title">Surprise Me</span>
+          <span class="cat-meta">Cross-domain global search</span>
+        </button>
+      </div>
+
+      <button id="btn-category-confirm" class="primary-btn">PROCEED TO SCANNER</button>
+    </section>
+
+    <!-- 3. CAMERA SCREEN -->
+    <section id="screen-camera" class="screen">
+      <div class="camera-header">
+        <span class="cam-status"><span class="dot"></span> LIVE SENSOR</span>
+        <span id="selected-universe-pill" class="pill">Anime</span>
+      </div>
+
+      <div class="viewfinder-container">
+        <video id="camera-video" playsinline autoplay muted></video>
+        <canvas id="snapshot-canvas" class="hidden"></canvas>
+
+        <!-- Sci-fi Overlays -->
+        <div class="hud-overlay">
+          <div class="face-oval">
+            <div class="laser-scanner"></div>
+          </div>
+          <div class="hud-corner top-left"></div>
+          <div class="hud-corner top-right"></div>
+          <div class="hud-corner bottom-left"></div>
+          <div class="hud-corner bottom-right"></div>
+          <div class="hud-text">ALIGN FACE WITHIN SENSOR OVAL</div>
+        </div>
+      </div>
+
+      <div class="camera-actions">
+        <button id="btn-capture-scan" class="scan-pulse-btn">
+          <span class="btn-inner">SCAN</span>
+        </button>
+        <p class="cam-hint">Look straight into the lens & hold steady</p>
+      </div>
+    </section>
+
+    <!-- 4. ANALYZING SCREEN -->
+    <section id="screen-analyzing" class="screen">
+      <div class="loading-matrix">
+        <div class="radar-box">
+          <div class="radar-sweep"></div>
+          <div class="radar-circle rc-1"></div>
+          <div class="radar-circle rc-2"></div>
+          <img id="analyzing-preview" alt="User Face" />
+        </div>
+
+        <div class="status-stream">
+          <h3 id="analysis-step" class="status-highlight">Initializing Deep Scan...</h3>
+          <p id="analysis-substep" class="terminal-text">> Extracting 128-D facial landmarks</p>
+        </div>
+
+        <div class="progress-wrapper">
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <span id="progress-text" class="progress-label">0%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. RESULT SCREEN (Believable Match) -->
+    <section id="screen-result" class="screen">
+      <div class="result-header">
+        <span class="match-confidence-badge">98.4% FACIAL MATCH</span>
+      </div>
+
+      <div class="result-card">
+        <div class="match-visual">
+          <div class="portrait-box">
+            <span class="tag">YOU</span>
+            <img id="user-portrait-img" alt="Your Capture" />
+          </div>
+          <div class="split-divider">⚡</div>
+          <div class="portrait-box">
+            <span class="tag">MATCH</span>
+            <div id="char-portrait-container" class="char-placeholder">
+              <span id="char-emoji">🦸‍♂️</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="match-info">
+          <h2 id="result-char-name">Gojo Satoru</h2>
+          <p id="result-char-universe" class="universe-tag">Jujutsu Kaisen • Anime</p>
+
+          <div class="metric-row">
+            <div class="metric">
+              <span class="lbl">Jawline Similarity</span>
+              <span class="val">99%</span>
+            </div>
+            <div class="metric">
+              <span class="lbl">Eye Proportion</span>
+              <span class="val">96%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button id="btn-reveal-prank" class="primary-btn glow-alert">
+          VIEW DETAILED BREAKDOWN
+        </button>
+      </div>
+    </section>
+
+    <!-- 6. PRANK REVEAL SCREEN -->
+    <section id="screen-prank" class="screen">
+      <div class="prank-card">
+        <div class="skull-anim">💀</div>
+        <h1 class="prank-title">YOU'VE BEEN PRANKED!</h1>
+        <p class="prank-subtitle">There is no AI match... you look like yourself 😂</p>
+
+        <div class="prank-badge-container">
+          <span class="prank-pill">Status: Successfully Trolled 🎣</span>
+        </div>
+
+        <div class="privacy-guarantee">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#22c55e" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Safe & Private: Your photo remained strictly on this phone. It was never sent anywhere!</span>
+        </div>
+
+        <div class="prank-actions">
+          <button id="btn-prank-friend" class="primary-btn">
+            PRANK A FRIEND 🔗
+          </button>
+          <button id="btn-restart" class="secondary-btn">
+            Try Again
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
